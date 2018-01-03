@@ -33,6 +33,13 @@ class PCHeader extends Component {
     };
   }
 
+  componentWillMount() {
+		if (localStorage.userid !== '') {
+			this.setState({hasLogined: true});
+			this.setState({userNickName: localStorage.userNickName, userid: localStorage.userid});
+		}
+	}
+
   setModalVisible(value) {
     this.setState({modalVisible: value});
   }
@@ -47,8 +54,37 @@ class PCHeader extends Component {
   }
 
   handleSubmit(e) {
-
+    e.preventDefault();
+    const myFetchOptions = {
+      method: 'GET'
+    };
+    let formData = this.props.form.getFieldsValue();
+    console.log(formData);
+    fetch(`http://newsapi.gugujiankong.com/Handler.ashx?action=${this.state.action}&username=${formData.userName}&password=${formData.password}&r_userName=${formData.r_userName}&r_password=${formData.r_password}&r_confirmPassword=${formData.r_confirmPassword}`, myFetchOptions).then(response => response.json()).then(json => {
+      this.setState({userNickName: json.NickUserName, userid: json.UserId});
+      localStorage.userid= json.UserId;
+			localStorage.userNickName = json.NickUserName;
+    });
+    if (this.state.action === 'login') {
+			this.setState({hasLogined: true});
+		}
+    message.success('请求成功');
+    this.setModalVisible(false);
   }
+
+  callback(key) {
+		if (key === 1) {
+			this.setState({action: 'login'});
+		} else if (key === 2) {
+			this.setState({action: 'register'});
+		}
+  }
+  
+  logout() {
+		localStorage.userid= '';
+		localStorage.userNickName = '';
+		this.setState({hasLogined: false});
+	}
 
   render() {
     let {getFieldProps} = this.props.form;
@@ -60,11 +96,11 @@ class PCHeader extends Component {
             <Button type="dashed" htmlType="button">个人中心</Button>
           </Link>
           &nbsp;&nbsp;
-          <Button type="ghost" htmlType="button">退出</Button>
+          <Button type="ghost" htmlType="button" onClick={this.logout.bind(this)}>退出</Button>
         </Menu.Item>
       : <Menu.Item key="register" className="register">
         <Icon type="appstore"/>注册/登录
-      </Menu.Item>;
+      </Menu.Item> ;
     return (
       <header>
         <Row>
@@ -98,9 +134,6 @@ class PCHeader extends Component {
               <Menu.Item key="keji">
                 <Icon type="appstore"/>科技
               </Menu.Item>
-              <Menu.Item key="shishang">
-                <Icon type="appstore"/>时尚
-              </Menu.Item>
               {userShow}
             </Menu>
             <Modal
@@ -110,7 +143,20 @@ class PCHeader extends Component {
               onCancel={() => this.setModalVisible(false)}
               onOk={() => this.setModalVisible(false)}
               okText="关闭">
-              <Tabs type="card">
+              <Tabs type="card" onChange={this.callback.bind(this)}>
+                <TabPane tab="登录" key="1">
+									<Form 
+                    horizontal="true" 
+                    onSubmit={this.handleSubmit.bind(this)}>
+										<FormItem label="账户">
+											<Input placeholder="请输入您的账号" {...getFieldProps('userName')}/>
+										</FormItem>
+										<FormItem label="密码">
+											<Input type="password" placeholder="请输入您的密码" {...getFieldProps('password')}/>
+										</FormItem>
+										<Button type="primary" htmlType="submit">登录</Button>
+									</Form>
+								</TabPane>
                 <TabPane tab="注册" key="2">
                   <Form
                     horizontal="true"
