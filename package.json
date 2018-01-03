@@ -12,7 +12,8 @@
     "react-responsive": "^4.0.3",
     "react-router": "^3.2.0",
     "react-scripts": "^1.0.17",
-    "style-loader": "^0.19.1"
+    "style-loader": "^0.19.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
