@@ -33,12 +33,12 @@ export default class PCNewsImageBlock extends Component {
     const {news} = this.state;
     const newsList = news.length
       ? news.map((newsItem, index) => (
-        <div key={index} class="imageblock">
+        <div key={index} className="imageblock">
 					<Link to={`details/${newsItem.uniquekey}`} target="_blank">
-						<div class="custom-image">
+						<div className="custom-image">
 							<img alt="" style={styleImage} src={newsItem.thumbnail_pic_s}/>
 						</div>
-						<div class="custom-card">
+						<div className="custom-card">
 							<h3 style={styeH3}>{newsItem.title}</h3>
 							<p>{newsItem.author_name}</p>
 						</div>

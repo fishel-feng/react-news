@@ -1,8 +1,9 @@
-// import { Router, Route, hashHistory } from 'react-router'
+import { Router, Route, hashHistory } from 'react-router'
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import MediaQuery from 'react-responsive';
 import PCIndex from './components/pc_index'
+import PCNewsDetails from './components/pc_news_details'
 import MobileIndex from './components/mobile_index'
 import './style/pc.css'
 import './style/mobile.css'
@@ -12,8 +13,11 @@ export default class Index extends Component {
   render() {
     return (
       <div>
-        <MediaQuery query="(min-device-width: 1224px)">          
-          <PCIndex/>
+        <MediaQuery query="(min-device-width: 1224px)">
+          <Router history={hashHistory}>
+            <Route path='/' component={PCIndex}/>           
+            <Route path='/details/:uniquekey' component={PCNewsDetails}/>           
+          </Router>
         </MediaQuery>
         <MediaQuery query="(max-device-width: 1224px)">          
           <MobileIndex/>
