@@ -5,6 +5,7 @@ import MediaQuery from 'react-responsive';
 import PCIndex from './components/pc_index'
 import PCNewsDetails from './components/pc_news_details'
 import MobileIndex from './components/mobile_index'
+import MobileNewsDetails from './components/mobile_news_details'
 import './style/pc.css'
 import './style/mobile.css'
 import 'antd/dist/antd.css';
@@ -20,7 +21,10 @@ export default class Index extends Component {
           </Router>
         </MediaQuery>
         <MediaQuery query="(max-device-width: 1224px)">          
-          <MobileIndex/>
+          <Router history={hashHistory}>
+            <Route path='/' component={MobileIndex}/>           
+            <Route path='/details/:uniquekey' component={MobileNewsDetails}/>           
+          </Router>
         </MediaQuery>
       </div>
     );
