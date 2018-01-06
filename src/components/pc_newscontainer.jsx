@@ -4,8 +4,9 @@ import carousel_1 from '../images/carousel_1.jpg';
 import carousel_2 from '../images/carousel_2.jpg';
 import carousel_3 from '../images/carousel_3.jpg';
 import carousel_4 from '../images/carousel_4.jpg';
-import PCNewsImageBlock from './pc_news_image_block'
-import PCNewsBlock from './pc_news_block'
+import PCNewsImageBlock from './pc_news_image_block';
+import PCNewsBlock from './pc_news_block';
+import PCProduct from './pc_product';
 const TabPane = Tabs.TabPane;
 
 export default class PCNewsContainer extends Component {
@@ -40,6 +41,11 @@ export default class PCNewsContainer extends Component {
               </TabPane>
               <TabPane tab="国际" key="2" >
                 <PCNewsBlock count={32} type="guoji" width="100%" bordered="false"/>
+              </TabPane>
+            </Tabs>
+            <Tabs className="tabs_product">
+              <TabPane tab="ReactNews" key="1">
+                <PCProduct></PCProduct>
               </TabPane>
             </Tabs>
           </Col>

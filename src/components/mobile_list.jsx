@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import {Row, Col} from 'antd';
 import {Link} from 'react-router';
+import Tloader from 'react-touch-loader';
 
 export default class MobileList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      news: ''
+      news: '',
+      count: 5,
+      hasMore: 0,
+      initalizing: 1,
+      refreshedAt: Date.now()
     };
   }
   
@@ -18,7 +23,34 @@ export default class MobileList extends Component {
     fetch(`http://newsapi.gugujiankong.com/Handler.ashx?action=getnews&type=${this.props.type}&count=${this.props.count}`, myFetchOptions).then(response => response.json()).then(json => this.setState({news: json}));
   }
 
+  loadMore(resolve) {
+    setTimeout(() => {
+      let count = this.state.count;
+      this.setState({
+        count: count + 5
+      });
+      const myFetchOptions = {
+        method: 'GET'
+      };
+      fetch(`http://newsapi.gugujiankong.com/Handler.ashx?action=getnews&type=${this.props.type}&count=${this.state.count}`, myFetchOptions).then(response => response.json()).then(json => this.setState({news: json}));  
+      this.setState({
+        hasMore: count > 0 && count < 50
+      });
+      resolve();
+    }, 2e3);
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        hasMore: 1,
+        initalizing: 2
+      });
+    }, 2e3);
+  }
+
   render() {
+    const {hasMore, initalizing, refreshedAt} = this.state;
     const {news} = this.state;
     const newsList = news.length
       ? news.map((newsItem, index) => (
@@ -51,8 +83,10 @@ export default class MobileList extends Component {
     return (
       <div>
         <Row>
-          <Col span={24} >
-            {newsList}
+          <Col span={24}>
+            <Tloader className="main" onloadMore={this.loadMore.bind(this)} hasMore={hasMore} initalizing={initalizing}>
+              {newsList}
+            </Tloader>
           </Col>
         </Row>
       </div>
