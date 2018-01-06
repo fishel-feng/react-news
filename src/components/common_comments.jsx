@@ -13,7 +13,8 @@ import {
   Button,
   Checkbox,
   Modal,
-  Card
+  Card,
+  notification
 } from 'antd';
 const { TextArea } = Input;
 const SubMenu = Menu.SubMenu;
@@ -51,7 +52,12 @@ class CommonComments extends Component {
   }
 
   addUserCollection() {
-    
+    const myFetchOptions = {
+      method: 'GET'
+    };
+    fetch(`http://newsapi.gugujiankong.com/Handler.ashx?action=uc&userid=${localStorage.userid}&uniquekey=${this.props.uniquekey}`,myFetchOptions).then(response=>response.json()).then(json=>{
+      notification['success']({message: 'ReactNews', description: '收藏成功'});
+    });
   }
 
   render() {
