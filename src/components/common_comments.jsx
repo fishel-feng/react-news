@@ -50,6 +50,10 @@ class CommonComments extends Component {
 		});
   }
 
+  addUserCollection() {
+    
+  }
+
   render() {
     let {getFieldProps} = this.props.form;
     const {comments} = this.state;
@@ -70,6 +74,8 @@ class CommonComments extends Component {
                 <TextArea placeholder="随便说点什么" {...getFieldProps('remark',{initialValue: ''})}/>
               </FormItem>
               <Button type="primary" htmlType="submit">提交评论</Button>
+              &nbsp;&nbsp;
+              <Button type="primary" htmlType="button" onClick={this.addUserCollection.bind(this)}>收藏文章</Button>
             </Form>
           </Col>
         </Row>
